@@ -23,8 +23,10 @@ test('Validationg Client application', async  ({browser})=>
    console.log(itemText);
 
     console.log(await expect(itemText).toBe("ZARA COAT 3"));
-    await addCartButton.nth(3).waitFor();
+    //await addCartButton.nth(3).waitFor();
     await addCartButton.nth(3).click();
+
+    //await expect(await page.locator(".ngx-spinner-overlay")).toContainText('Product Added To Cart');
 
 
 
