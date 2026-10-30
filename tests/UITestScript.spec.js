@@ -10,6 +10,7 @@ test('Validating login scenario for client application ', async  ({browser})=>
     const loginButton = page.locator("[id='login']");
     const productName = "ZARA COAT 3";
     const products = page.locator(".card-body");
+    const email = "arifsyed83@gmail.com";
 
     await page.goto("https://rahulshettyacademy.com/client/#/auth/login");
     await page.waitForLoadState('networkidle');
@@ -18,7 +19,7 @@ test('Validating login scenario for client application ', async  ({browser})=>
 
     console.log(await expect(titleText).toBe("Let's Shop"));
     
-    await userName.fill('arifsyed83@gmail.com');
+    await userName.fill(email);
     await password.fill('Syedaakibidris@786');
     await loginButton.click();
     await page.waitForLoadState('networkidle');
@@ -73,7 +74,52 @@ test('Validating login scenario for client application ', async  ({browser})=>
         
     }
 
-    await page.pause(3000);
+    expect(page.locator(".user__name [type='text']").first()).toHaveText(email);
+
+    await page.locator("div.field.small input").first().fill("123");
+    await page.locator("div.field input").nth(2).fill("Syed Arif");
+    await page.locator("div.field input").nth(3).fill("rahulshettyacademy");
+    await page.locator(".field.small button").click();
+    const coupleText = page.locator(".field.small p");
+    await expect(coupleText).toHaveText("* Coupon Applied");
+
+    await page.locator(".action__submit").click();
+
+    await page.locator(".box h1").waitFor();
+    const orderCOnfirmText =page.locator(".box h1");
+    await expect(orderCOnfirmText).toHaveText(" Thankyou for the order. ");
+    console.log("Order confirmation text is visible: " + await orderCOnfirmText.textContent()); 
+
+    await page.locator(".box label").last().waitFor();
+    const orderID = page.locator(".box label").last();
+    const OrderIDText = (await orderID.textContent())?.replace(/\|/g, "").trim();
+    console.log("Order ID: " + OrderIDText);
+    
+    await page.locator("[routerlink*='myorders'] i").waitFor();
+    await page.locator("[routerlink*='myorders'] i").click();
+    await page.locator("tbody").waitFor();
+
+    const rowsIDText = page.locator("tbody tr");
+    const rowCount = await rowsIDText.count();
+
+    for (let i = 0; i < rowCount; i++) {
+    const row = rowsIDText.nth(i);
+    const rowOrderId = (await row.locator("th").textContent())
+        ?.replace(/\|/g, "")
+        .trim();
+
+    if (rowOrderId === OrderIDText) {
+        await row.locator("button").first().click();
+        break;
+    }
+}
+
+    await page.locator(".col-text").first().waitFor();
+    const summaryOrderIdtext =page.locator(".col-text").first();
+    console.log("Summary page order is : " + summaryOrderIdtext.textContent());
+
+
+
 
 
 });
