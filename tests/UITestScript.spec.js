@@ -1,5 +1,5 @@
-const {test} = require('@playwright/test')
-const {expect} = require('@playwright/test')
+import { test } from '@playwright/test';
+import { expect } from '@playwright/test';
 
 test('Validating login scenario for client application ', async  ({browser})=>
 {

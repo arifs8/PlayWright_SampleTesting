@@ -6,23 +6,28 @@ import { defineConfig, devices } from '@playwright/test';
  */
 const config = ({
   testDir: './tests',
-  timeout: 40 * 1000,
+  testMatch: '**/*.spec.js',
+  retries:0,
+
+  use:{
+    actionTimeout: 10* 1000,
+    navigationTimeout: 30* 1000,
+    //Browser OPtions
+    browserName: 'chromium',
+    headless: true,
+    screenshot : 'on',
+    trace : 'retain_on_failure',
+  },
+
+  timeout: 30 * 1000,
 
   expect: {
-    timeout: 40*1000,
+    timeout: 5000,
   },
 
   reporter: 'html',
 
-  use: {
-
-    //Browser OPtions
-    browserName: 'chromium',
-    headless: true
-
-
-    /* Collect trace when retrying the failed test. See https://playwright.dev/docs/trace-viewer */
-  },
+  
 
 
 });
