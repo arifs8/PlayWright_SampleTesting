@@ -3,7 +3,8 @@ const {expect} = require('@playwright/test');
 
 test('Invalid Login Error messgae Validation test', async  ({browser})=>
 {
-    
+
+    page.setDefaultTimeout(7000);
     const context = await browser.newContext();
     const page = await context.newPage();
     const userName = page.locator("[id='username']");
